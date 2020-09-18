@@ -1,0 +1,39 @@
+<div class="column is-12-mobile">
+  <div class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        {{ selectedUserB | titlecase }}
+      </p>
+      <a href="#" class="card-header-icon" aria-label="more options">
+        <span class="icon has-text-success">
+          <i class="far fa-comments" title="Chat"></i>
+        </span>
+      </a>
+    </header>
+    <div class="card-content">
+      <div class="content mb-2" [ngStyle]="{'overflow': 'auto', 'max-height': '180px'}" *ngIf="isPresent(receivedMessage)">
+        <article class="message has-background-light" *ngFor="let message of chatMessageList">
+          <div class="message-body mb-2 has-text-weight-semibold is-family-monospace">
+            {{ message | titlecase }}
+            <br>
+            <time class="is-size-7">{{ today | date: 'shortTime' }}</time>
+          </div>
+        </article>
+      </div>
+      <div class="field has-addons">
+        <div class="control">
+          <input class="input" name="chatBox2" #chatBox2Ref type="text" placeholder="Enter text..." [formControl]="chatBox2"
+          spellcheck="false" autocomplete="off" required>
+        </div>
+        <div class="control">
+          <button class="button is-primary" type="button" [disabled]="chatBox2?.invalid" (click)="sendMessage()">
+            Chat
+          </button>
+        </div>
+      </div>
+    </div>
+    <footer class="card-footer" *ngIf="chatMessageList?.length > 0">
+      <a class="card-footer-item" type="button" (click)="endChat()">End Chat</a>
+    </footer>
+  </div>
+</div>

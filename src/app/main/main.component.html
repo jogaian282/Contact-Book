@@ -1,0 +1,138 @@
+<!-- Begin HTML -->
+<section class="section">
+  <div class="container">
+    <div class="columns is-gapless is-mobile" [ngStyle]="{'align-items': 'flex-end'}">
+      <div class="column is-narrow">
+        <span class="icon is-medium has-text-danger">
+          <i class="fas fa-lg fa-address-book"></i>
+        </span>
+      </div>
+      <div class="column is-narrow">
+        <p class="title">Contacts</p>
+        <p class="subtitle is-size-7 pl-1">Welcome to Chat Application</p>
+      </div>
+    </div>
+    <div class="columns is-vcentered">
+      <div class="column is-one-third-desktop">
+        <section class="section is-small">
+          <div class="container">
+            <p class="control has-icons-right">
+              <input (ngModelChange)="onSearchContact($event);" [formControl]="searchContact" autocomplete="off" spellCheck="false" class="input is-rounded" type="text" placeholder="Search by name, company...">
+              <span class="icon is-small is-right">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#ddd" d="M23.822 20.88l-6.353-6.354c.93-1.465 1.467-3.2 1.467-5.059.001-5.219-4.247-9.467-9.468-9.467s-9.468 4.248-9.468 9.468c0 5.221 4.247 9.469 9.468 9.469 1.768 0 3.421-.487 4.839-1.333l6.396 6.396 3.119-3.12zm-20.294-11.412c0-3.273 2.665-5.938 5.939-5.938 3.275 0 5.94 2.664 5.94 5.938 0 3.275-2.665 5.939-5.94 5.939-3.274 0-5.939-2.664-5.939-5.939z"/></svg>
+              </span>
+            </p>
+          </div>
+        </section>
+      </div>
+      <div class="column is-narrow has-text-centered">
+        <button class="button is-primary" type="button" (click)="openAddCompanyModal(null)">
+          <span class="icon is-small">
+            <i class="fas fa-plus"></i>
+          </span>
+          <span>Add Contact</span>
+        </button>
+        <app-create-contact-modal *ngIf="showModal" [selectedContactObj]="editContactObj" (triggerCloseModal)="onCloseModal($event)"></app-create-contact-modal>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Begin Table -->
+<section class="section is-small" *ngIf="contactList?.length > 0">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-12-mobile is-8-tablet is-6-desktop table-container">
+        <table class="is-fullwidth table">
+          <thead class="has-background-white-ter">
+            <tr class="is-size-7">
+              <th class="has-text-grey">#</th>
+              <th class="has-text-grey">Basic Info</th>
+              <th class="has-text-grey">Company</th>
+              <th class="has-text-grey" colspan="2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr [ngStyle]="{'cursor': 'pointer'}" *ngFor="let contact of contactList; let i = index;" [class.has-background-link-light]="selectedContactIndex === i" (click)="showContactDetail(contact, i)">
+              <th>
+                <label class="checkbox">
+                  <input type="checkbox">
+                </label>
+              </th>
+              <td>
+                <article class="media">
+                  <figure class="media-left mr-0">
+                    <p class="image is-32x32 my-2 mr-2">
+                      <span class="is-rounded">{{ ((contact?.name).substring(0,1)) | uppercase }}</span>
+                    </p>
+                  </figure>
+                  <div class="media-content">
+                    <div class="content">
+                      <p>
+                        <strong [ngStyle]="{'text-decoration': 'underline'}">{{ contact?.name | titlecase }}</strong>
+                        <br>
+                        <small>{{ contact?.email | titlecase }}</small>
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              </td>
+              <td>
+                <p>
+                  <strong>{{ contact?.company | titlecase }}</strong>
+                </p>
+              </td>
+              <td>
+                <span class="icon has-text-link" [ngStyle]="{'cursor': 'pointer'}" (click)="openAddCompanyModal(contact); $event.stopPropagation()">
+                  <i class="fas fa-user-edit" title="Edit"></i>
+                </span>
+              </td>
+              <td>
+                <span class="icon has-text-danger" [ngStyle]="{'cursor': 'pointer'}" (click)="openChat(contact?.name, i); $event.stopPropagation()">
+                  <i class="far fa-comments" title="Chat"></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="column is-12-mobile is-4-tablet is-4-desktop" *ngIf="selectedContact !== null">
+        <div class="px-2 py-2 is-flex" [ngStyle]="{'flex-direction': 'column', 'justify-content': 'center', 'align-items': 'center', 'background': 'aliceblue'}">
+          <figure>
+            <p class="image is-64x64 my-2 mr-2 has-background-warning">
+              <span class="is-rounded ">{{ ((selectedContact?.name).substring(0,1)) | uppercase }}</span>
+            </p>
+          </figure>
+          <div class="has-text-centered">
+            <p class="title is-size-6">{{ selectedContact?.name | titlecase }}</p>
+            <p class="subtitle is-size-7 pl-1">Product Manager at {{ selectedContact?.company | titlecase }}</p>
+          </div>
+          <div class="content mx-4 my-5 has-text-centered">
+            <dl>
+              <dt class="is-size-7 has-text-grey-light">Name:</dt>
+              <dd class="is-size-7 has-text-weight-semibold">{{ selectedContact?.name | titlecase }}</dd>
+              <span class="mb-3"></span>
+              <dt class="is-size-7 has-text-grey-light">Email:</dt>
+              <dd class="is-size-7 has-text-weight-semibold">{{ selectedContact?.email | titlecase }}</dd>
+              <span class="mb-3"></span>
+              <dt class="is-size-7 has-text-grey-light">Phone:</dt>
+              <dd class="is-size-7 has-text-weight-semibold">{{ selectedContact?.phone }}</dd>
+              <span class="mb-3"></span>
+              <dt class="is-size-7 has-text-grey-light">Company:</dt>
+              <dd class="is-size-7 has-text-weight-semibold">{{ selectedContact?.company | titlecase }}</dd>
+              <span class="mb-3"></span>
+              <dt class="is-size-7 has-text-grey-light">Addres:</dt>
+              <dd class="is-size-7 has-text-weight-semibold">{{ selectedContact?.address }}</dd>
+            </dl>
+          </div>
+          <div class="has-text-centered">
+            <button class="button is-info is-outlined" (click)="selectedContact = null; selectedContactIndex = null">Close</button>
+          </div>
+        </div>
+      </div>
+      <app-user-one [selectedUserA]="selectedUserA" (closeChat)="endChat($event)" *ngIf="isPresent(selectedUserA)"></app-user-one>
+      <app-user-two [selectedUserB]="selectedUserB" (closeChat)="endChat($event)" *ngIf="isPresent(selectedUserB)"></app-user-two>
+    </div>
+  </div>
+</section>
+
+

@@ -1,0 +1,52 @@
+<div class="modal is-active">
+  <div class="modal-background"></div>
+  <form autocomplete="off" (ngSubmit)="submitContact()" [formGroup]="contactFormGroup">
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title has-text-left">{{ isSave ? 'Add New Contact' : 'Edit Contact'}}</p>
+        <button class="delete" aria-label="close" type="button" (click)="closeModal()"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label has-text-left">Name*</label>
+          <div class="control">
+            <input class="input" spellcheck="false" maxlength="40" #nameRef formControlName="name" placeholder="Full Name" type="text" name="name" required>
+            <p class="help is-danger has-text-left" *ngIf="name?.invalid && name?.touched">Name is required</p>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label has-text-left">Email*</label>
+          <div class="control">
+            <input class="input" maxlength="30" formControlName="email" name="email" placeholder="Email Id" type="email" required>
+            <p class="help is-danger has-text-left" *ngIf="email?.invalid && email?.touched && !email?.errors?.email">Email is required</p>
+            <p class="help is-danger has-text-left" *ngIf="email?.errors?.email">Invalid email</p>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label has-text-left">Phone*</label>
+          <div class="control">
+            <input class="input" formControlName="phone" maxlength="15" name="phone" placeholder="Phone No." type="text" required>
+            <p class="help is-danger has-text-left" *ngIf="phone?.invalid && phone?.touched">Phone is required</p>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label has-text-left">Company*</label>
+          <div class="control">
+            <input class="input" formControlName="company" maxlength="30" name="company" placeholder="Company" type="text" required>
+            <p class="help is-danger has-text-left" *ngIf="company?.invalid && company?.touched">Company is required</p>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label has-text-left">Address</label>
+          <div class="control">
+            <textarea class="textarea" name="address" formControlName="address" placeholder="Type Address"></textarea>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-link is-light" type="button" (click)="closeModal()">Cancel</button>
+        <button class="button is-primary" type="submit">{{ isSave ? 'Create' : 'Update' }}</button>
+      </footer>
+    </div>
+  </form>
+</div>

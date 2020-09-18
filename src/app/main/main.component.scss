@@ -1,0 +1,30 @@
+.section {
+    padding: 0.75rem 0;
+}
+table td,th {
+    vertical-align: middle;
+}
+.image {
+  border-radius: 50%;
+  background-color: #777777;
+  .is-rounded {
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+  }
+}
+dl {
+  display: grid;
+  grid-template-columns: max-content auto;
+}
+
+dt {
+  grid-column-start: 1;
+}
+
+dd {
+  grid-column-start: 2;
+}
