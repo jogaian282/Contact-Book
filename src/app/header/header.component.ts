@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {
     this.contactObjSubscription = this.sessionService.contactObj$.subscribe((contactObj: IContact) => {
       if (isPresent(contactObj)) {
-        this.getContactList();
+        this.contactList = this.sessionService.get(SESSION_KEY);
       }
     });
   }
@@ -52,9 +52,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * @description- Method to get contact list.
    */
   private getContactList(): void {
-    this.contactService.loadContactList().subscribe((contactList: IContact[]) => {
-      this.contactList = contactList[`contact`];
-    });
+    if (sessionStorage.getItem(SESSION_KEY) === null || sessionStorage.getItem(SESSION_KEY).length === 0) {
+      this.contactService.loadContactList().subscribe((contactList: IContact[]) => {
+        this.contactList = contactList[`contact`];
+      });
+    } else {
+      this.contactList = this.sessionService.get(SESSION_KEY);
+    }
   }
 
   /**

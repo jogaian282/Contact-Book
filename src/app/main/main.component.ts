@@ -73,10 +73,15 @@ export class MainComponent implements OnInit, OnDestroy {
    * @description- Method to get contact list.
    */
   private getContactList(): void {
-    this.contactService.loadContactList().subscribe((contactList: IContact[]) => {
-      this.contactList = contactList[`contact`];
+    if (sessionStorage.getItem(SESSION_KEY) === null || sessionStorage.getItem(SESSION_KEY).length === 0) {
+      this.contactService.loadContactList().subscribe((contactList: IContact[]) => {
+        this.contactList = contactList[`contact`];
+        this.clonedContactList = Object.assign([], this.contactList);
+      });
+    } else {
+      this.contactList = this.sessionService.get(SESSION_KEY);
       this.clonedContactList = Object.assign([], this.contactList);
-    });
+    }
   }
 
   /**
